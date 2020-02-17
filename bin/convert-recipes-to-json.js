@@ -54,7 +54,7 @@ const main = async () => {
 	const paths = await globby(`${inputDir}/*`);
 	paths.forEach((recipePath) => {
 		console.log(recipePath);
-		const contents = fs.readFileSync(recipePath, {encoding: 'UTF-8'}).split('\n');
+		const contents = fs.readFileSync(recipePath, {encoding: 'UTF-8'}).split('\r\n');
 
 		const obj = {};
 
@@ -75,7 +75,7 @@ const main = async () => {
 
 			if (['Ingredients', 'Instructions'].includes(tag)) {
 				const endIndex = findNextBlankLineIndex(contents, index);
-				obj[tag] = contents.slice(index, endIndex).join('\n');
+				obj[tag] = contents.slice(index + 1, endIndex);
 				index = endIndex;
 			} else if (tag === 'Notes') {
 				obj['Notes'] = contents.slice(index, contents.length).join('\n');

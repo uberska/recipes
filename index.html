@@ -52,13 +52,27 @@
 						recipeContainer.appendChild(desc);
 					}
 
-					const ingredients = document.createElement('p');
-					ingredients.innerText = recipe.Ingredients;
-					recipeContainer.appendChild(ingredients);
+					const ingredientsHeading = document.createElement('h3');
+					ingredientsHeading.innerText = 'Ingredients';
+					recipeContainer.appendChild(ingredientsHeading);
 
-					const instructions = document.createElement('p');
-					instructions.innerText = recipe.Instructions;
-					recipeContainer.appendChild(instructions);
+					const ingredientList = document.createElement('ul');
+					recipe.Ingredients.forEach(ingredient => {
+						const ingredientElem = document.createElement('li');
+						ingredientElem.innerText = ingredient;
+						ingredientList.appendChild(ingredientElem);
+					});
+					recipeContainer.appendChild(ingredientList);
+
+					const instructionsHeading = document.createElement('h3');
+					instructionsHeading.innerText = 'Instructions';
+					recipeContainer.appendChild(instructionsHeading);
+
+					recipe.Instructions.forEach(instructions => {
+						const instructionsElem = document.createElement('p');
+						instructionsElem.innerText = instructions;
+						recipeContainer.appendChild(instructionsElem);
+					});
 				});	
 			};
 
