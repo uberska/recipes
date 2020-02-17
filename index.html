@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+	<head>
+		<script
+			src="https://code.jquery.com/jquery-3.4.1.min.js"
+			integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			crossorigin="anonymous"></script>
+
+		<style>
+			.recipe-container {
+				border: 1px solid black;
+				margin-bottom: 20px;
+			}
+		</style>
+
+		<script type="text/javascript">
+			const downloadManifest = async () => {
+				const resp = await fetch("/recipes/pepperplate_recipes_json/manifest.json");
+				const manifest = await resp.json();
+				return manifest;
+			};
+
+			const downloadRecipes = async (manifest) => {
+				return Promise.all(
+					manifest.map(async recipeUrl => {
+						const resp = await fetch(recipeUrl);
+						return resp.json();
+					})
+				);
+			};
+
+			const populateWithRecipes = (elem, recipes, filterText) => {
+				elem.innerHTML = '';
+
+				recipes.forEach((recipe) => {
+					if (filterText.toLowerCase() &&
+						JSON.stringify(recipe).toLowerCase().indexOf(filterText) === -1) {
+						return;
+					}
+
+					const recipeContainer = document.createElement('div');
+					recipeContainer.classList.add('recipe-container');
+					elem.appendChild(recipeContainer);
+
+					const title = document.createElement('h1');
+					title.innerText = recipe.Title;
+					recipeContainer.appendChild(title);
+
+					if (recipe.Description !== '') {
+						const desc = document.createElement('h2');
+						desc.innerText = recipe.Description;
+						recipeContainer.appendChild(desc);
+					}
+
+					const ingredients = document.createElement('p');
+					ingredients.innerText = recipe.Ingredients;
+					recipeContainer.appendChild(ingredients);
+
+					const instructions = document.createElement('p');
+					instructions.innerText = recipe.Instructions;
+					recipeContainer.appendChild(instructions);
+				});	
+			};
+
+			const hookUpFilter = (filter, app, recipes) => {
+				filter.addEventListener('input', (e) => {
+					populateWithRecipes(app, recipes, e.target.value);
+				});
+			};
+
+			const main = async () => {
+				const app = document.querySelector('#app');
+				const filter = document.querySelector('#filter');
+
+				const manifest = await downloadManifest();
+				const recipes = await downloadRecipes(manifest);
+
+				populateWithRecipes(app, recipes, filter.value);
+
+				hookUpFilter(filter, app, recipes);
+			};
+
+			$(document).ready(() => {
+				main();
+			})
+		</script>
+	</head>
+	<body>
+		Filter: <input type="text" id="filter"></input>
+		<div id='app'></div>
+	</body>
+</html>

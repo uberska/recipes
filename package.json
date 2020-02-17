@@ -1,0 +1,26 @@
+{
+  "name": "recipes",
+  "version": "0.0.1",
+  "description": "Load recipes so they can be filtered.",
+  "main": "index.js",
+  "bin": {
+    "recipes": "convert-recipes-to-json.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uberska/recipes.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uberska/recipes/issues"
+  },
+  "homepage": "https://github.com/uberska/recipes#readme",
+  "dependencies": {
+    "fs-extra": "^8.1.0",
+    "globby": "^11.0.0"
+  }
+}
